@@ -10,38 +10,24 @@ class Parser
   end
 
   def lake_elevation
-    output = []
+    output     = []
+    dates      = []
+    elevations = []
 
-    get_dates.each_with_index do |date, index|
+    @table.each do |row|
+      dates << row.search('td:first-child').inner_text
+      elevations << row.search('td:nth-child(2)').inner_text
+    end
+
+    dates.each_with_index do |date, index|
       hash = {
         "date"  => date,
-        "value" => get_lake_elevation[index]
+        "value" => elevations[index]
       }
 
       output << hash
     end
 
     return output
-  end
-
-
-  private
-
-  def get_dates
-    dates = []
-    @table.each do |row|
-      dates << row.search('td:first-child').inner_text
-    end
-
-    return dates
-  end
-
-  def get_lake_elevation
-    lake_elevation_data = []
-
-    @table.each do |row|
-      lake_elevation_data << row.search('td:nth-child(2)').inner_text
-    end
-    return lake_elevation_data
   end
 end
