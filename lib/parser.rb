@@ -6,7 +6,7 @@ class Parser
 
   def initialize
     @agent = Mechanize.new
-    @table = @agent.get(URL).search(SELECTOR)
+    @rows  = @agent.get(URL).search(SELECTOR)
   end
 
   def lake_elevation
@@ -14,7 +14,7 @@ class Parser
     dates      = []
     elevations = []
 
-    @table.each do |row|
+    @rows.each do |row|
       dates << row.search('td:first-child').inner_text
       elevations << row.search('td:nth-child(2)').inner_text
     end
